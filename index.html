@@ -18,7 +18,6 @@
             --accent-dark: #ef4444;
             --accent-dark-bg: rgba(239, 68, 68, 0.15);
             --primary-blue: #3b82f6;
-            --primary-hover: #2563eb;
             --radius-lg: 20px;
             --radius-md: 12px;
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
@@ -92,7 +91,7 @@
             gap: 6px;
         }
 
-        /* SELECTOR BAR */
+        /* CONTROLS */
         .controls-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -130,11 +129,6 @@
             outline: none;
             cursor: pointer;
             width: 100%;
-            transition: border-color 0.2s;
-        }
-
-        select:focus {
-            border-color: var(--primary-blue);
         }
 
         .date-tabs {
@@ -170,7 +164,6 @@
             padding: 24px;
             text-align: center;
             position: relative;
-            overflow: hidden;
             box-shadow: var(--shadow);
         }
 
@@ -313,7 +306,6 @@
             color: #64748b;
         }
 
-        /* LEGEND */
         .legend {
             display: flex;
             gap: 20px;
@@ -361,9 +353,9 @@
             <i class="fa-solid fa-bolt"></i>
             <h1>Світло Львівщина</h1>
         </div>
-        <div class="update-badge" id="updateBadge">
+        <div class="update-badge">
             <i class="fa-solid fa-clock-rotate-left"></i>
-            <span id="updateTimeText">Завантаження...</span>
+            <span id="updateTimeText">Оновлено щойно</span>
         </div>
     </header>
 
@@ -396,8 +388,8 @@
         <div class="status-icon-wrapper" id="statusIcon">
             <i class="fa-solid fa-lightbulb"></i>
         </div>
-        <div class="status-title" id="statusTitle">Завантаження...</div>
-        <div class="status-timer" id="statusTimer">Розрахунок статусу...</div>
+        <div class="status-title" id="statusTitle">СВІТЛО Є</div>
+        <div class="status-timer" id="statusTimer">Завантаження...</div>
     </div>
 
     <div class="timeline-card">
@@ -443,9 +435,8 @@
 </div>
 
 <script>
-    const LAST_UPDATED = new Date();
+    const updateTimestamp = Date.now();
 
-    // ТЕСТОВИЙ ГРАФІК ВІДКЛЮЧЕНЬ НА СЬОГОДНІ
     const scheduleToday = {
         "1.1": ["20:00-22:30"],
         "1.2": ["11:00-14:00"],
@@ -483,42 +474,38 @@
     }
 
     function parseTime(timeStr) {
-        const [h, m] = timeStr.split(':').map(Number);
-        return h * 60 + m;
+        const parts = timeStr.split(':');
+        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
     }
 
     function formatMinutes(min) {
         const h = Math.floor(min / 60).toString().padStart(2, '0');
         const m = (min % 60).toString().padStart(2, '0');
-        return `${h}:${m}`;
+        return h + ':' + m;
     }
 
     function getIntervalsInMinutes(group, day) {
         const schedule = day === 'today' ? scheduleToday : scheduleTomorrow;
         if (!schedule || !schedule[group]) return [];
-        return schedule[group].map(str => {
-            const [startStr, endStr] = str.split('-');
+        return schedule[group].map(function(str) {
+            const parts = str.split('-');
             return {
-                start: parseTime(startStr),
-                end: parseTime(endStr),
+                start: parseTime(parts[0]),
+                end: parseTime(parts[1]),
                 raw: str
             };
         });
     }
 
     function updateRelativeTime() {
-        const now = new Date();
-        const diffMs = now - LAST_UPDATED;
-        const diffMins = Math.floor(diffMs / (1000 * 60));
-        
+        const diffMins = Math.floor((Date.now() - updateTimestamp) / 60000);
         let text = "";
         if (diffMins < 1) {
             text = "Оновлено щойно";
         } else if (diffMins < 60) {
-            text = `Оновлено ${diffMins} хв тому`;
+            text = "Оновлено " + diffMins + " хв тому";
         } else {
-            const hours = Math.floor(diffMins / 60);
-            text = `Оновлено ${hours} год тому`;
+            text = "Оновлено " + Math.floor(diffMins / 60) + " год тому";
         }
         document.getElementById('updateTimeText').innerText = text;
     }
@@ -569,7 +556,7 @@
             const remainingSec = (activeInterval.end - currentMin - 1) * 60 + (60 - currentSec);
             const rMin = Math.floor(remainingSec / 60);
             const rSec = remainingSec % 60;
-            statusTimer.innerHTML = `З'явиться через: <span>${rMin} хв ${rSec} с</span> (о ${formatMinutes(activeInterval.end)})`;
+            statusTimer.innerHTML = "З'явиться через: <span>" + rMin + " хв " + rSec + " с</span> (о " + formatMinutes(activeInterval.end) + ")";
         } else {
             statusCard.className = 'status-card light-on';
             statusIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
@@ -579,7 +566,7 @@
                 const remainingSec = (nextInterval.start - currentMin - 1) * 60 + (60 - currentSec);
                 const rMin = Math.floor(remainingSec / 60);
                 const rSec = remainingSec % 60;
-                statusTimer.innerHTML = `Вимкнуть через: <span>${rMin} хв ${rSec} с</span> (о ${formatMinutes(nextInterval.start)})`;
+                statusTimer.innerHTML = "Вимкнуть через: <span>" + rMin + " хв " + rSec + " с</span> (о " + formatMinutes(nextInterval.start) + ")";
             } else {
                 statusTimer.innerHTML = "До кінця дня вимкнень більше не заплановано";
             }
@@ -587,7 +574,7 @@
     }
 
     function renderTimeline() {
-        document.getElementById('selectedGroupLabel').innerText = `Група ${selectedGroup}`;
+        document.getElementById('selectedGroupLabel').innerText = 'Група ' + selectedGroup;
         const timelineContent = document.getElementById('timelineContent');
         const noDataContent = document.getElementById('noDataContent');
         const timelineBar = document.getElementById('timelineBar');
@@ -606,21 +593,39 @@
         timelineBar.innerHTML = '';
         outageBadges.innerHTML = '';
 
-        intervals.forEach(inv => {
+        intervals.forEach(function(inv) {
             const leftPct = (inv.start / 1440) * 100;
             const widthPct = ((inv.end - inv.start) / 1440) * 100;
 
             const segment = document.createElement('div');
             segment.className = 'timeline-segment-off';
-            segment.style.left = `${leftPct}%`;
-            segment.style.width = `${widthPct}%`;
+            segment.style.left = leftPct + '%';
+            segment.style.width = widthPct + '%';
             timelineBar.appendChild(segment);
 
             const badge = document.createElement('div');
             badge.className = 'interval-badge';
-            badge.innerHTML = `<i class="fa-solid fa-plug-circle-xmark"></i> ${inv.raw}`;
+            badge.innerHTML = '<i class="fa-solid fa-plug-circle-xmark"></i> ' + inv.raw;
             outageBadges.appendChild(badge);
         });
 
         if (intervals.length === 0) {
-            outageBadges.innerHTML = `<div class="empty-outage"><i class="fa-solid fa-circle-che
+            outageBadges.innerHTML = '<div class="empty-outage"><i class="fa-solid fa-circle-check"></i> Відключень на цей день не заплановано</div>';
+        }
+    }
+
+    function render() {
+        renderStatus();
+        renderTimeline();
+    }
+
+    updateRelativeTime();
+    render();
+
+    setInterval(function() {
+        renderStatus();
+        updateRelativeTime();
+    }, 1000);
+</script>
+</body>
+</html>
