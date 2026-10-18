@@ -119,7 +119,7 @@
             white-space: nowrap;
         }
 
-        select, input[type="time"] {
+        select {
             background: #0f172a;
             color: #fff;
             border: 1px solid var(--card-border);
@@ -129,14 +129,11 @@
             font-weight: 600;
             outline: none;
             cursor: pointer;
+            width: 100%;
             transition: border-color 0.2s;
         }
 
-        select {
-            width: 100%;
-        }
-
-        select:focus, input[type="time"]:focus {
+        select:focus {
             border-color: var(--primary-blue);
         }
 
@@ -338,53 +335,6 @@
             border-radius: 3px;
         }
 
-        /* TEST PANEL */
-        .test-card {
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px dashed #f59e0b;
-            border-radius: var(--radius-lg);
-            padding: 18px 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .test-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .test-title {
-            color: #f59e0b;
-            font-weight: 700;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .test-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .test-btn {
-            background: #f59e0b;
-            color: #000;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .test-btn:hover {
-            opacity: 0.9;
-        }
-
         @media (max-width: 600px) {
             header {
                 flex-direction: column;
@@ -416,20 +366,6 @@
             <span id="updateTimeText">Завантаження...</span>
         </div>
     </header>
-
-    <!-- ТЕСТОВА ПАНЕЛЬ ДЛЯ ТЕСТУВАННЯ ГРАФІКІВ -->
-    <div class="test-card">
-        <div class="test-header">
-            <div class="test-title">
-                <i class="fa-solid fa-vial"></i> Тест симуляції часу
-            </div>
-        </div>
-        <div class="test-controls">
-            <label for="testTime" style="font-size: 0.9rem; color: var(--text-muted);">Вибрати час:</label>
-            <input type="time" id="testTime" value="12:00">
-            <button class="test-btn" id="toggleTestBtn" onclick="toggleTestMode()">Увімкнути симуляцію</button>
-        </div>
-    </div>
 
     <div class="controls-card">
         <div class="group-selector-wrapper">
@@ -507,20 +443,28 @@
 </div>
 
 <script>
-    const LAST_UPDATED = new Date('2026-10-18T14:30:00');
+    const LAST_UPDATED = new Date();
 
-    // Графік на сьогодні
+    // ТЕСТОВИЙ ГРАФІК ВІДКЛЮЧЕНЬ НА СЬОГОДНІ
     const scheduleToday = {
-        "1.1": [], "1.2": [], "2.1": [], "2.2": [],
-        "3.1": [], "3.2": [], "4.1": [], "4.2": [],
-        "5.1": [], "5.2": [], "6.1": [], "6.2": []
+        "1.1": ["20:00-22:30"],
+        "1.2": ["11:00-14:00"],
+        "2.1": ["17:00-20:00"],
+        "2.2": ["11:00-14:00"],
+        "3.1": ["17:00-20:00"],
+        "3.2": ["14:00-17:00"],
+        "4.1": ["20:00-22:30"],
+        "4.2": ["10:00-12:00", "21:00-22:30"],
+        "5.1": ["12:00-15:00"],
+        "5.2": ["14:00-17:00"],
+        "6.1": ["15:00-18:00"],
+        "6.2": ["18:00-21:00"]
     };
 
     const scheduleTomorrow = null;
 
     let currentDay = 'today';
     let selectedGroup = localStorage.getItem('selectedGroup') || '1.1';
-    let isTestMode = false;
 
     const groupSelect = document.getElementById('groupSelect');
     groupSelect.value = selectedGroup;
@@ -530,25 +474,6 @@
         localStorage.setItem('selectedGroup', selectedGroup);
         render();
     });
-
-    document.getElementById('testTime').addEventListener('input', () => {
-        if (isTestMode) render();
-    });
-
-    function toggleTestMode() {
-        isTestMode = !isTestMode;
-        const btn = document.getElementById('toggleTestBtn');
-        if (isTestMode) {
-            btn.innerText = "Вимкнути симуляцію";
-            btn.style.background = "#ef4444";
-            btn.style.color = "#fff";
-        } else {
-            btn.innerText = "Увімкнути симуляцію";
-            btn.style.background = "#f59e0b";
-            btn.style.color = "#000";
-        }
-        render();
-    }
 
     function switchDay(day) {
         currentDay = day;
@@ -598,15 +523,6 @@
         document.getElementById('updateTimeText').innerText = text;
     }
 
-    function getCurrentTimeInMinutes() {
-        if (isTestMode) {
-            const timeVal = document.getElementById('testTime').value;
-            return parseTime(timeVal);
-        }
-        const now = new Date();
-        return now.getHours() * 60 + now.getMinutes();
-    }
-
     function renderStatus() {
         const statusCard = document.getElementById('statusCard');
         const statusIcon = document.getElementById('statusIcon');
@@ -622,7 +538,9 @@
             return;
         }
 
-        const currentMin = getCurrentTimeInMinutes();
+        const now = new Date();
+        const currentMin = now.getHours() * 60 + now.getMinutes();
+        const currentSec = now.getSeconds();
         const intervals = getIntervalsInMinutes(selectedGroup, 'today');
 
         let isOff = false;
@@ -648,8 +566,61 @@
             statusIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
             statusTitle.innerText = "СВІТЛА НЕМАЄ";
 
-            const remainingMin = activeInterval.end - currentMin;
-            statusTimer.innerHTML = `З'явиться через: <span>${remainingMin} хв</span> (о ${formatMinutes(activeInterval.end)})`;
+            const remainingSec = (activeInterval.end - currentMin - 1) * 60 + (60 - currentSec);
+            const rMin = Math.floor(remainingSec / 60);
+            const rSec = remainingSec % 60;
+            statusTimer.innerHTML = `З'явиться через: <span>${rMin} хв ${rSec} с</span> (о ${formatMinutes(activeInterval.end)})`;
         } else {
             statusCard.className = 'status-card light-on';
-            statusIcon.innerHTML = '<i class="fa-solid
+            statusIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+            statusTitle.innerText = "СВІТЛО Є";
+
+            if (nextInterval) {
+                const remainingSec = (nextInterval.start - currentMin - 1) * 60 + (60 - currentSec);
+                const rMin = Math.floor(remainingSec / 60);
+                const rSec = remainingSec % 60;
+                statusTimer.innerHTML = `Вимкнуть через: <span>${rMin} хв ${rSec} с</span> (о ${formatMinutes(nextInterval.start)})`;
+            } else {
+                statusTimer.innerHTML = "До кінця дня вимкнень більше не заплановано";
+            }
+        }
+    }
+
+    function renderTimeline() {
+        document.getElementById('selectedGroupLabel').innerText = `Група ${selectedGroup}`;
+        const timelineContent = document.getElementById('timelineContent');
+        const noDataContent = document.getElementById('noDataContent');
+        const timelineBar = document.getElementById('timelineBar');
+        const outageBadges = document.getElementById('outageBadges');
+
+        const intervals = getIntervalsInMinutes(selectedGroup, currentDay);
+
+        if (currentDay === 'tomorrow' && !scheduleTomorrow) {
+            timelineContent.style.display = 'none';
+            noDataContent.style.display = 'block';
+            return;
+        }
+
+        timelineContent.style.display = 'block';
+        noDataContent.style.display = 'none';
+        timelineBar.innerHTML = '';
+        outageBadges.innerHTML = '';
+
+        intervals.forEach(inv => {
+            const leftPct = (inv.start / 1440) * 100;
+            const widthPct = ((inv.end - inv.start) / 1440) * 100;
+
+            const segment = document.createElement('div');
+            segment.className = 'timeline-segment-off';
+            segment.style.left = `${leftPct}%`;
+            segment.style.width = `${widthPct}%`;
+            timelineBar.appendChild(segment);
+
+            const badge = document.createElement('div');
+            badge.className = 'interval-badge';
+            badge.innerHTML = `<i class="fa-solid fa-plug-circle-xmark"></i> ${inv.raw}`;
+            outageBadges.appendChild(badge);
+        });
+
+        if (intervals.length === 0) {
+            outageBadges.innerHTML = `<div class="empty-outage"><i class="fa-solid fa-circle-che
