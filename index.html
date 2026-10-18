@@ -3,366 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Графіки відключень світла — Львівська область</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Світло Львівщина</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
-            --text-main: #f8fafc;
+            --bg: #090d16;
+            --surface: #131b2e;
+            --surface-card: #1b2640;
+            --border: #2a3959;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --accent-light: #22c55e;
-            --accent-light-bg: rgba(34, 197, 94, 0.15);
-            --accent-dark: #ef4444;
-            --accent-dark-bg: rgba(239, 68, 68, 0.15);
-            --primary-blue: #3b82f6;
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.2);
+            --red: #f43f5e;
+            --red-glow: rgba(244, 63, 94, 0.2);
+            --accent: #6366f1;
+            --radius: 24px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 12px;
+            justify-content: center;
+            padding: 24px 16px;
         }
 
-        .container {
+        .app {
             width: 100%;
-            max-width: 800px;
+            max-width: 480px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         /* HEADER */
-        header {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
+        .header {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
-            flex-wrap: wrap;
-            gap: 15px;
+            justify-content: space-between;
         }
 
-        .brand-title {
+        .logo {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .brand-title i {
-            color: #f59e0b;
-            font-size: 1.8rem;
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
         }
 
-        .brand-title h1 {
-            font-size: 1.3rem;
+        .logo-text h1 {
+            font-size: 1.1rem;
             font-weight: 700;
         }
 
-        .update-badge {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid var(--primary-blue);
-            color: #60a5fa;
-            padding: 6px 14px;
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .update-pill {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         /* CONTROLS */
-        .controls-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 16px 20px;
+        .controls {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .group-selector-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .group-selector-wrapper label {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            white-space: nowrap;
+        .select-box {
+            position: relative;
         }
 
         select {
-            background: #0f172a;
-            color: #fff;
-            border: 1px solid var(--card-border);
-            padding: 10px 16px;
-            border-radius: var(--radius-md);
+            width: 100%;
+            background: var(--surface-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            border-radius: 16px;
             font-size: 1rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
-            width: 100%;
+            appearance: none;
         }
 
-        .date-tabs {
+        .select-box::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            font-size: 0.8rem;
+        }
+
+        .days-switch {
             display: flex;
-            background: #0f172a;
+            background: var(--surface-card);
             padding: 4px;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            border: 1px solid var(--border);
         }
 
-        .tab-btn {
+        .day-btn {
+            flex: 1;
             background: transparent;
             border: none;
             color: var(--text-muted);
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 12px;
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .tab-btn.active {
-            background: var(--primary-blue);
+        .day-btn.active {
+            background: var(--accent);
             color: #fff;
         }
 
-        /* STATUS DISPLAY */
-        .status-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
+        /* MAIN STATUS CARD */
+        .main-status {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 20px;
             text-align: center;
             position: relative;
-            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: border-color 0.3s;
         }
 
-        .status-card.light-on {
-            border-color: var(--accent-light);
-            background: linear-gradient(180deg, var(--card-bg) 0%, rgba(34, 197, 94, 0.05) 100%);
+        .main-status.is-on {
+            border-color: var(--green);
+            background: linear-gradient(180deg, var(--surface) 0%, var(--green-glow) 100%);
         }
 
-        .status-card.light-off {
-            border-color: var(--accent-dark);
-            background: linear-gradient(180deg, var(--card-bg) 0%, rgba(239, 68, 68, 0.05) 100%);
+        .main-status.is-off {
+            border-color: var(--red);
+            background: linear-gradient(180deg, var(--surface) 0%, var(--red-glow) 100%);
         }
 
-        .status-icon-wrapper {
-            width: 70px;
-            height: 70px;
+        .status-circle {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
+            margin: 0 auto 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
             font-size: 2rem;
         }
 
-        .light-on .status-icon-wrapper {
-            background: var(--accent-light-bg);
-            color: var(--accent-light);
+        .is-on .status-circle {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--green);
         }
 
-        .light-off .status-icon-wrapper {
-            background: var(--accent-dark-bg);
-            color: var(--accent-dark);
+        .is-off .status-circle {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--red);
         }
 
-        .status-title {
+        .status-header {
             font-size: 1.8rem;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
-        .light-on .status-title { color: var(--accent-light); }
-        .light-off .status-title { color: var(--accent-dark); }
+        .is-on .status-header { color: var(--green); }
+        .is-off .status-header { color: var(--red); }
 
-        .status-timer {
-            font-size: 1.05rem;
+        .status-sub {
+            font-size: 0.95rem;
             color: var(--text-muted);
         }
 
-        .status-timer span {
+        .status-sub span {
             color: var(--text-main);
             font-weight: 700;
         }
 
         /* TIMELINE CARD */
         .timeline-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            box-shadow: var(--shadow);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
         }
 
-        .section-title {
-            font-size: 1.1rem;
+        .card-title {
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            color: var(--text-muted);
         }
 
         .timeline-bar {
-            height: 28px;
-            background: var(--accent-light);
+            height: 24px;
+            background: var(--green);
             border-radius: 8px;
             position: relative;
             overflow: hidden;
-            display: flex;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 8px;
         }
 
-        .timeline-segment-off {
+        .timeline-off {
             position: absolute;
             top: 0;
             bottom: 0;
-            background: var(--accent-dark);
+            background: var(--red);
         }
 
-        .timeline-labels {
+        .timeline-ticks {
             display: flex;
             justify-content: space-between;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            font-size: 0.75rem;
-            padding: 0 2px;
         }
 
-        /* OUTAGE LIST */
-        .outage-intervals {
+        /* INTERVALS LIST */
+        .intervals-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .interval-badge {
-            background: var(--accent-dark-bg);
-            border: 1px solid var(--accent-dark);
-            color: var(--accent-dark);
-            padding: 8px 14px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
             gap: 8px;
+            margin-top: 16px;
         }
 
-        .empty-outage {
-            background: var(--accent-light-bg);
-            border: 1px solid var(--accent-light);
-            color: var(--accent-light);
-            padding: 12px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            font-weight: 600;
-            width: 100%;
-        }
-
-        .no-data-msg {
-            text-align: center;
-            padding: 30px 10px;
-            color: var(--text-muted);
-        }
-
-        .no-data-msg i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-            color: #64748b;
-        }
-
-        .legend {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 15px;
+        .badge-off {
+            background: var(--red-glow);
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 6px 12px;
+            border-radius: 10px;
             font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .legend-item {
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .legend-box {
-            width: 12px;
-            height: 12px;
-            border-radius: 3px;
+        .badge-none {
+            background: var(--green-glow);
+            border: 1px solid var(--green);
+            color: var(--green);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
         }
 
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .controls-card {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .date-tabs {
-                width: 100%;
-            }
-            .tab-btn {
-                flex: 1;
-            }
+        .no-data {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="brand-title">
-            <i class="fa-solid fa-bolt"></i>
-            <h1>Світло Львівщина</h1>
+<div class="app">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="logo-text">
+                <h1>Світло Львівщина</h1>
+                <p>Статус черг в реальному часі</p>
+            </div>
         </div>
-        <div class="update-badge">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span id="updateTimeText">Оновлено щойно</span>
-        </div>
-    </header>
+        <div class="update-pill" id="updateTimeText">Щойно</div>
+    </div>
 
-    <div class="controls-card">
-        <div class="group-selector-wrapper">
-            <label for="groupSelect"><i class="fa-solid fa-layer-group"></i> Група:</label>
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="select-box">
             <select id="groupSelect">
+                <option value="test">⚡ Група «ТЕСТ» (з відключеннями)</option>
                 <option value="1.1">Група 1.1</option>
                 <option value="1.2">Група 1.2</option>
                 <option value="2.1">Група 2.1</option>
@@ -378,58 +342,42 @@
             </select>
         </div>
 
-        <div class="date-tabs">
-            <button class="tab-btn active" id="btnToday" onclick="switchDay('today')">Сьогодні</button>
-            <button class="tab-btn" id="btnTomorrow" onclick="switchDay('tomorrow')">Завтра</button>
+        <div class="days-switch">
+            <button class="day-btn active" id="btnToday" onclick="switchDay('today')">Сьогодні</button>
+            <button class="day-btn" id="btnTomorrow" onclick="switchDay('tomorrow')">Завтра</button>
         </div>
     </div>
 
-    <div class="status-card" id="statusCard">
-        <div class="status-icon-wrapper" id="statusIcon">
+    <!-- STATUS CARD -->
+    <div class="main-status" id="statusCard">
+        <div class="status-circle" id="statusIcon">
             <i class="fa-solid fa-lightbulb"></i>
         </div>
-        <div class="status-title" id="statusTitle">СВІТЛО Є</div>
-        <div class="status-timer" id="statusTimer">Завантаження...</div>
+        <div class="status-header" id="statusTitle">ПЕРЕВІРКА...</div>
+        <div class="status-sub" id="statusTimer">Розрахунок...</div>
     </div>
 
+    <!-- TIMELINE -->
     <div class="timeline-card">
-        <div class="section-title">
-            <span>Графік на день</span>
-            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: normal;" id="selectedGroupLabel">Група 1.1</span>
+        <div class="card-title">
+            <span>Шкапа доби</span>
+            <span id="groupLabel" style="color: var(--text-main);">Тест</span>
         </div>
 
-        <div id="timelineContent">
+        <div id="timelineContainer">
             <div class="timeline-bar" id="timelineBar"></div>
-            <div class="timeline-labels">
+            <div class="timeline-ticks">
                 <span>00:00</span>
-                <span>04:00</span>
-                <span>08:00</span>
+                <span>06:00</span>
                 <span>12:00</span>
-                <span>16:00</span>
-                <span>20:00</span>
+                <span>18:00</span>
                 <span>24:00</span>
             </div>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-box" style="background: var(--accent-light);"></div>
-                    <span>Світло є</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: var(--accent-dark);"></div>
-                    <span>Немає світла</span>
-                </div>
-            </div>
-
-            <div style="margin-top: 20px;">
-                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">Інтервали відключень:</div>
-                <div class="outage-intervals" id="outageBadges"></div>
-            </div>
+            <div class="intervals-list" id="intervalsList"></div>
         </div>
 
-        <div id="noDataContent" class="no-data-msg" style="display: none;">
-            <i class="fa-regular fa-calendar-xmark"></i>
-            <div>Графік на завтра ще не оголошено Львівобленерго.</div>
+        <div id="noDataBox" class="no-data" style="display: none;">
+            Графік на завтра ще не опубліковано Львівобленерго.
         </div>
     </div>
 </div>
@@ -437,25 +385,18 @@
 <script>
     const updateTimestamp = Date.now();
 
+    // Графік на сьогодні (всі зі світлом, а "test" має багато відключень для перевірки)
     const scheduleToday = {
-        "1.1": ["20:00-22:30"],
-        "1.2": ["11:00-14:00"],
-        "2.1": ["17:00-20:00"],
-        "2.2": ["11:00-14:00"],
-        "3.1": ["17:00-20:00"],
-        "3.2": ["14:00-17:00"],
-        "4.1": ["20:00-22:30"],
-        "4.2": ["10:00-12:00", "21:00-22:30"],
-        "5.1": ["12:00-15:00"],
-        "5.2": ["14:00-17:00"],
-        "6.1": ["15:00-18:00"],
-        "6.2": ["18:00-21:00"]
+        "test": ["01:00-03:30", "08:00-11:00", "14:00-16:30", "20:00-23:00"],
+        "1.1": [], "1.2": [], "2.1": [], "2.2": [],
+        "3.1": [], "3.2": [], "4.1": [], "4.2": [],
+        "5.1": [], "5.2": [], "6.1": [], "6.2": []
     };
 
     const scheduleTomorrow = null;
 
     let currentDay = 'today';
-    let selectedGroup = localStorage.getItem('selectedGroup') || '1.1';
+    let selectedGroup = localStorage.getItem('selectedGroup') || 'test';
 
     const groupSelect = document.getElementById('groupSelect');
     groupSelect.value = selectedGroup;
@@ -473,144 +414,119 @@
         render();
     }
 
-    function parseTime(timeStr) {
-        const parts = timeStr.split(':');
-        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    function parseTime(str) {
+        const p = str.split(':');
+        return parseInt(p[0]) * 60 + parseInt(p[1]);
     }
 
-    function formatMinutes(min) {
+    function formatTime(min) {
         const h = Math.floor(min / 60).toString().padStart(2, '0');
         const m = (min % 60).toString().padStart(2, '0');
-        return h + ':' + m;
+        return `${h}:${m}`;
     }
 
-    function getIntervalsInMinutes(group, day) {
-        const schedule = day === 'today' ? scheduleToday : scheduleTomorrow;
-        if (!schedule || !schedule[group]) return [];
-        return schedule[group].map(function(str) {
-            const parts = str.split('-');
-            return {
-                start: parseTime(parts[0]),
-                end: parseTime(parts[1]),
-                raw: str
-            };
+    function getIntervals(group, day) {
+        const sch = day === 'today' ? scheduleToday : scheduleTomorrow;
+        if (!sch || !sch[group]) return [];
+        return sch[group].map(s => {
+            const p = s.split('-');
+            return { start: parseTime(p[0]), end: parseTime(p[1]), raw: s };
         });
     }
 
-    function updateRelativeTime() {
-        const diffMins = Math.floor((Date.now() - updateTimestamp) / 60000);
-        let text = "";
-        if (diffMins < 1) {
-            text = "Оновлено щойно";
-        } else if (diffMins < 60) {
-            text = "Оновлено " + diffMins + " хв тому";
-        } else {
-            text = "Оновлено " + Math.floor(diffMins / 60) + " год тому";
-        }
-        document.getElementById('updateTimeText').innerText = text;
-    }
-
     function renderStatus() {
-        const statusCard = document.getElementById('statusCard');
-        const statusIcon = document.getElementById('statusIcon');
-        const statusTitle = document.getElementById('statusTitle');
-        const statusTimer = document.getElementById('statusTimer');
+        const card = document.getElementById('statusCard');
+        const title = document.getElementById('statusTitle');
+        const timer = document.getElementById('statusTimer');
 
         if (currentDay === 'tomorrow') {
-            statusCard.className = 'status-card';
-            statusIcon.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
-            statusTitle.innerText = "Статус невідомий";
-            statusTitle.style.color = "var(--text-main)";
-            statusTimer.innerHTML = "Графік на завтра ще очікується";
+            card.className = 'main-status';
+            title.innerText = "ОЧІКУЄТЬСЯ";
+            title.style.color = "var(--text-main)";
+            timer.innerText = "Графік на завтра поки невідомий";
             return;
         }
 
         const now = new Date();
-        const currentMin = now.getHours() * 60 + now.getMinutes();
-        const currentSec = now.getSeconds();
-        const intervals = getIntervalsInMinutes(selectedGroup, 'today');
+        const curMin = now.getHours() * 60 + now.getMinutes();
+        const curSec = now.getSeconds();
+        const intervals = getIntervals(selectedGroup, 'today');
 
         let isOff = false;
-        let activeInterval = null;
-        let nextInterval = null;
+        let activeInv = null;
+        let nextInv = null;
 
         for (let i = 0; i < intervals.length; i++) {
             const inv = intervals[i];
-            if (currentMin >= inv.start && currentMin < inv.end) {
+            if (curMin >= inv.start && curMin < inv.end) {
                 isOff = true;
-                activeInterval = inv;
+                activeInv = inv;
                 break;
             }
-            if (inv.start > currentMin) {
-                if (!nextInterval || inv.start < nextInterval.start) {
-                    nextInterval = inv;
-                }
+            if (inv.start > curMin) {
+                if (!nextInv || inv.start < nextInv.start) nextInv = inv;
             }
         }
 
         if (isOff) {
-            statusCard.className = 'status-card light-off';
-            statusIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
-            statusTitle.innerText = "СВІТЛА НЕМАЄ";
-
-            const remainingSec = (activeInterval.end - currentMin - 1) * 60 + (60 - currentSec);
-            const rMin = Math.floor(remainingSec / 60);
-            const rSec = remainingSec % 60;
-            statusTimer.innerHTML = "З'явиться через: <span>" + rMin + " хв " + rSec + " с</span> (о " + formatMinutes(activeInterval.end) + ")";
+            card.className = 'main-status is-off';
+            title.innerText = "НЕМАЄ СВІТЛА";
+            const remSec = (activeInv.end - curMin - 1) * 60 + (60 - curSec);
+            const m = Math.floor(remSec / 60);
+            const s = remSec % 60;
+            timer.innerHTML = `Увімкнуть через: <span>${m} хв ${s} с</span> (о ${formatTime(activeInv.end)})`;
         } else {
-            statusCard.className = 'status-card light-on';
-            statusIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
-            statusTitle.innerText = "СВІТЛО Є";
-
-            if (nextInterval) {
-                const remainingSec = (nextInterval.start - currentMin - 1) * 60 + (60 - currentSec);
-                const rMin = Math.floor(remainingSec / 60);
-                const rSec = remainingSec % 60;
-                statusTimer.innerHTML = "Вимкнуть через: <span>" + rMin + " хв " + rSec + " с</span> (о " + formatMinutes(nextInterval.start) + ")";
+            card.className = 'main-status is-on';
+            title.innerText = "СВІТЛО Є";
+            if (nextInv) {
+                const remSec = (nextInv.start - curMin - 1) * 60 + (60 - curSec);
+                const m = Math.floor(remSec / 60);
+                const s = remSec % 60;
+                timer.innerHTML = `Вимкнуть через: <span>${m} хв ${s} с</span> (о ${formatTime(nextInv.start)})`;
             } else {
-                statusTimer.innerHTML = "До кінця дня вимкнень більше не заплановано";
+                timer.innerHTML = "До кінця дня відключень не планується";
             }
         }
     }
 
     function renderTimeline() {
-        document.getElementById('selectedGroupLabel').innerText = 'Група ' + selectedGroup;
-        const timelineContent = document.getElementById('timelineContent');
-        const noDataContent = document.getElementById('noDataContent');
-        const timelineBar = document.getElementById('timelineBar');
-        const outageBadges = document.getElementById('outageBadges');
-
-        const intervals = getIntervalsInMinutes(selectedGroup, currentDay);
+        document.getElementById('groupLabel').innerText = groupSelect.options[groupSelect.selectedIndex].text;
+        const container = document.getElementById('timelineContainer');
+        const noData = document.getElementById('noDataBox');
+        const bar = document.getElementById('timelineBar');
+        const list = document.getElementById('intervalsList');
 
         if (currentDay === 'tomorrow' && !scheduleTomorrow) {
-            timelineContent.style.display = 'none';
-            noDataContent.style.display = 'block';
+            container.style.display = 'none';
+            noData.style.display = 'block';
             return;
         }
 
-        timelineContent.style.display = 'block';
-        noDataContent.style.display = 'none';
-        timelineBar.innerHTML = '';
-        outageBadges.innerHTML = '';
+        container.style.display = 'block';
+        noData.style.display = 'none';
+        bar.innerHTML = '';
+        list.innerHTML = '';
 
-        intervals.forEach(function(inv) {
-            const leftPct = (inv.start / 1440) * 100;
-            const widthPct = ((inv.end - inv.start) / 1440) * 100;
+        const intervals = getIntervals(selectedGroup, currentDay);
 
-            const segment = document.createElement('div');
-            segment.className = 'timeline-segment-off';
-            segment.style.left = leftPct + '%';
-            segment.style.width = widthPct + '%';
-            timelineBar.appendChild(segment);
+        intervals.forEach(inv => {
+            const left = (inv.start / 1440) * 100;
+            const width = ((inv.end - inv.start) / 1440) * 100;
+
+            const seg = document.createElement('div');
+            seg.className = 'timeline-off';
+            seg.style.left = `${left}%`;
+            seg.style.width = `${width}%`;
+            bar.appendChild(seg);
 
             const badge = document.createElement('div');
-            badge.className = 'interval-badge';
-            badge.innerHTML = '<i class="fa-solid fa-plug-circle-xmark"></i> ' + inv.raw;
-            outageBadges.appendChild(badge);
+            badge.className = 'badge-off';
+            badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${inv.raw}`;
+            list.appendChild(badge);
         });
 
         if (intervals.length === 0) {
-            outageBadges.innerHTML = '<div class="empty-outage"><i class="fa-solid fa-circle-check"></i> Відключень на цей день не заплановано</div>';
+            list.innerHTML = `<div class="badge-none"><i class="fa-solid fa-circle-check"></i> Відключень немає (світло весь день)</div>`;
         }
     }
 
@@ -619,12 +535,9 @@
         renderTimeline();
     }
 
-    updateRelativeTime();
     render();
-
-    setInterval(function() {
+    setInterval(() => {
         renderStatus();
-        updateRelativeTime();
     }, 1000);
 </script>
 </body>
