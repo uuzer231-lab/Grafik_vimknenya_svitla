@@ -40,7 +40,7 @@
 
         .app {
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -95,46 +95,65 @@
             font-weight: 500;
         }
 
-        /* CONTROLS */
+        /* CONTROLS & MULTI-GROUP SELECTOR */
         .controls {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 16px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .select-box {
-            position: relative;
-        }
-
-        select {
-            width: 100%;
-            background: var(--surface-card);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 14px 16px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
-        }
-
-        .select-box::after {
-            content: '\f078';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
+        .section-label {
+            font-size: 0.85rem;
+            font-weight: 700;
             color: var(--text-muted);
-            pointer-events: none;
-            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .group-btn {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 6px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .group-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .group-btn.test-btn {
+            grid-column: span 4;
+            background: rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .group-btn.test-btn.active {
+            background: #f59e0b;
+            color: #000;
         }
 
         .days-switch {
@@ -168,7 +187,7 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 32px 20px;
+            padding: 28px 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -186,14 +205,14 @@
         }
 
         .status-circle {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            margin: 0 auto 16px;
+            margin: 0 auto 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
 
         .is-on .status-circle {
@@ -207,7 +226,7 @@
         }
 
         .status-header {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 800;
             margin-bottom: 6px;
             letter-spacing: -0.5px;
@@ -235,7 +254,7 @@
         }
 
         .card-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             margin-bottom: 14px;
             display: flex;
@@ -266,34 +285,55 @@
             color: var(--text-muted);
         }
 
-        /* INTERVALS LIST */
-        .intervals-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .badge-off {
-            background: var(--red-glow);
-            border: 1px solid var(--red);
-            color: var(--red);
-            padding: 6px 12px;
-            border-radius: 10px;
+        /* OUTAGE LIST FORMATTED */
+        .outage-list-title {
             font-size: 0.85rem;
             font-weight: 700;
+            color: var(--text-muted);
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+
+        .intervals-stack {
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .interval-row {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--red);
+            padding: 10px 14px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 6px;
+        }
+
+        .interval-time {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .interval-tag {
+            font-size: 0.75rem;
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--red);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
         }
 
         .badge-none {
             background: var(--green-glow);
             border: 1px solid var(--green);
             color: var(--green);
-            padding: 10px;
+            padding: 12px;
             border-radius: 12px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             width: 100%;
             text-align: center;
@@ -316,30 +356,33 @@
             <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
             <div class="logo-text">
                 <h1>Світло Львівщина</h1>
-                <p>Статус черг в реальному часі</p>
+                <p>Мульти-вибір груп</p>
             </div>
         </div>
         <div class="update-pill" id="updateTimeText">Щойно</div>
     </div>
 
-    <!-- CONTROLS -->
+    <!-- CONTROLS WITH MULTI-SELECT -->
     <div class="controls">
-        <div class="select-box">
-            <select id="groupSelect">
-                <option value="test">⚡ Група «ТЕСТ» (з відключеннями)</option>
-                <option value="1.1">Група 1.1</option>
-                <option value="1.2">Група 1.2</option>
-                <option value="2.1">Група 2.1</option>
-                <option value="2.2">Група 2.2</option>
-                <option value="3.1">Група 3.1</option>
-                <option value="3.2">Група 3.2</option>
-                <option value="4.1">Група 4.1</option>
-                <option value="4.2">Група 4.2</option>
-                <option value="5.1">Група 5.1</option>
-                <option value="5.2">Група 5.2</option>
-                <option value="6.1">Група 6.1</option>
-                <option value="6.2">Група 6.2</option>
-            </select>
+        <div class="section-label">
+            <span>Виберіть групи:</span>
+            <span id="selectedCount" style="color: var(--accent);">Вибрано: 1</span>
+        </div>
+
+        <div class="groups-grid" id="groupsGrid">
+            <div class="group-btn test-btn" data-group="test">⚡ Група «ТЕСТ» (Приклад)</div>
+            <div class="group-btn" data-group="1.1">1.1</div>
+            <div class="group-btn" data-group="1.2">1.2</div>
+            <div class="group-btn" data-group="2.1">2.1</div>
+            <div class="group-btn" data-group="2.2">2.2</div>
+            <div class="group-btn" data-group="3.1">3.1</div>
+            <div class="group-btn" data-group="3.2">3.2</div>
+            <div class="group-btn" data-group="4.1">4.1</div>
+            <div class="group-btn" data-group="4.2">4.2</div>
+            <div class="group-btn" data-group="5.1">5.1</div>
+            <div class="group-btn" data-group="5.2">5.2</div>
+            <div class="group-btn" data-group="6.1">6.1</div>
+            <div class="group-btn" data-group="6.2">6.2</div>
         </div>
 
         <div class="days-switch">
@@ -348,7 +391,7 @@
         </div>
     </div>
 
-    <!-- STATUS CARD -->
+    <!-- MAIN STATUS CARD -->
     <div class="main-status" id="statusCard">
         <div class="status-circle" id="statusIcon">
             <i class="fa-solid fa-lightbulb"></i>
@@ -357,11 +400,11 @@
         <div class="status-sub" id="statusTimer">Розрахунок...</div>
     </div>
 
-    <!-- TIMELINE -->
+    <!-- TIMELINE CARD -->
     <div class="timeline-card">
         <div class="card-title">
-            <span>Шкапа доби</span>
-            <span id="groupLabel" style="color: var(--text-main);">Тест</span>
+            <span>Шкала доби</span>
+            <span id="selectedGroupsLabel" style="color: var(--text-main);">Групи: —</span>
         </div>
 
         <div id="timelineContainer">
@@ -373,7 +416,9 @@
                 <span>18:00</span>
                 <span>24:00</span>
             </div>
-            <div class="intervals-list" id="intervalsList"></div>
+
+            <div class="outage-list-title">Години відключень:</div>
+            <div class="intervals-stack" id="intervalsStack"></div>
         </div>
 
         <div id="noDataBox" class="no-data" style="display: none;">
@@ -385,9 +430,17 @@
 <script>
     const updateTimestamp = Date.now();
 
-    // Графік на сьогодні (всі зі світлом, а "test" має багато відключень для перевірки)
+    // Графік на сьогодні
+    // "test" містить твій приклад відключень:
     const scheduleToday = {
-        "test": ["01:00-03:30", "08:00-11:00", "14:00-16:30", "20:00-23:00"],
+        "test": [
+            "00:00-06:00",
+            "06:00-09:00",
+            "09:00-12:00",
+            "12:00-17:00",
+            "17:00-23:00",
+            "23:00-24:00"
+        ],
         "1.1": [], "1.2": [], "2.1": [], "2.2": [],
         "3.1": [], "3.2": [], "4.1": [], "4.2": [],
         "5.1": [], "5.2": [], "6.1": [], "6.2": []
@@ -396,16 +449,37 @@
     const scheduleTomorrow = null;
 
     let currentDay = 'today';
-    let selectedGroup = localStorage.getItem('selectedGroup') || 'test';
+    let selectedGroups = JSON.parse(localStorage.getItem('selectedGroups')) || ['test'];
 
-    const groupSelect = document.getElementById('groupSelect');
-    groupSelect.value = selectedGroup;
+    function saveSelectedGroups() {
+        localStorage.setItem('selectedGroups', JSON.stringify(selectedGroups));
+    }
 
-    groupSelect.addEventListener('change', (e) => {
-        selectedGroup = e.target.value;
-        localStorage.setItem('selectedGroup', selectedGroup);
-        render();
-    });
+    function initGroupButtons() {
+        const grid = document.getElementById('groupsGrid');
+        const buttons = grid.querySelectorAll('.group-btn');
+
+        buttons.forEach(btn => {
+            const grp = btn.getAttribute('data-group');
+            if (selectedGroups.includes(grp)) {
+                btn.classList.add('active');
+            }
+
+            btn.addEventListener('click', () => {
+                if (selectedGroups.includes(grp)) {
+                    if (selectedGroups.length > 1) {
+                        selectedGroups = selectedGroups.filter(g => g !== grp);
+                        btn.classList.remove('active');
+                    }
+                } else {
+                    selectedGroups.push(grp);
+                    btn.classList.add('active');
+                }
+                saveSelectedGroups();
+                render();
+            });
+        });
+    }
 
     function switchDay(day) {
         currentDay = day;
@@ -425,12 +499,56 @@
         return `${h}:${m}`;
     }
 
-    function getIntervals(group, day) {
+    // Отримання та об'єднання всіх інтервалів для вибраних груп
+    function getCombinedIntervals(day) {
         const sch = day === 'today' ? scheduleToday : scheduleTomorrow;
-        if (!sch || !sch[group]) return [];
-        return sch[group].map(s => {
-            const p = s.split('-');
-            return { start: parseTime(p[0]), end: parseTime(p[1]), raw: s };
+        if (!sch) return [];
+
+        let rawIntervals = [];
+
+        selectedGroups.forEach(grp => {
+            if (sch[grp]) {
+                sch[grp].forEach(str => {
+                    const parts = str.split('-');
+                    let endMin = parseTime(parts[1]);
+                    if (parts[1] === '00:00' && parseTime(parts[0]) > 0) {
+                        endMin = 1440; // 24:00
+                    }
+                    rawIntervals.push({
+                        start: parseTime(parts[0]),
+                        end: endMin,
+                        raw: str
+                    });
+                });
+            }
+        });
+
+        if (rawIntervals.length === 0) return [];
+
+        // Сортуємо інтервали за часом початку
+        rawIntervals.sort((a, b) => a.start - b.start);
+
+        // Об'єднуємо інтервали, які перекриваються або йдуть поспіль
+        let merged = [rawIntervals[0]];
+        for (let i = 1; i < rawIntervals.length; i++) {
+            let last = merged[merged.length - 1];
+            let curr = rawIntervals[i];
+
+            if (curr.start <= last.end) {
+                last.end = Math.max(last.end, curr.end);
+            } else {
+                merged.push(curr);
+            }
+        }
+
+        return merged.map(m => {
+            const startStr = formatTime(m.start);
+            const endStr = m.end === 1440 ? '24:00' : formatTime(m.end);
+            return {
+                start: m.start,
+                end: m.end,
+                raw: `${startStr} - ${endStr}`
+            };
         });
     }
 
@@ -450,7 +568,7 @@
         const now = new Date();
         const curMin = now.getHours() * 60 + now.getMinutes();
         const curSec = now.getSeconds();
-        const intervals = getIntervals(selectedGroup, 'today');
+        const intervals = getCombinedIntervals('today');
 
         let isOff = false;
         let activeInv = null;
@@ -474,7 +592,8 @@
             const remSec = (activeInv.end - curMin - 1) * 60 + (60 - curSec);
             const m = Math.floor(remSec / 60);
             const s = remSec % 60;
-            timer.innerHTML = `Увімкнуть через: <span>${m} хв ${s} с</span> (о ${formatTime(activeInv.end)})`;
+            const endFormatted = activeInv.end === 1440 ? '24:00' : formatTime(activeInv.end);
+            timer.innerHTML = `Увімкнуть через: <span>${m} хв ${s} с</span> (о ${endFormatted})`;
         } else {
             card.className = 'main-status is-on';
             title.innerText = "СВІТЛО Є";
@@ -490,11 +609,13 @@
     }
 
     function renderTimeline() {
-        document.getElementById('groupLabel').innerText = groupSelect.options[groupSelect.selectedIndex].text;
+        document.getElementById('selectedCount').innerText = `Вибрано: ${selectedGroups.length}`;
+        document.getElementById('selectedGroupsLabel').innerText = `Групи: ${selectedGroups.join(', ')}`;
+
         const container = document.getElementById('timelineContainer');
         const noData = document.getElementById('noDataBox');
         const bar = document.getElementById('timelineBar');
-        const list = document.getElementById('intervalsList');
+        const stack = document.getElementById('intervalsStack');
 
         if (currentDay === 'tomorrow' && !scheduleTomorrow) {
             container.style.display = 'none';
@@ -505,9 +626,9 @@
         container.style.display = 'block';
         noData.style.display = 'none';
         bar.innerHTML = '';
-        list.innerHTML = '';
+        stack.innerHTML = '';
 
-        const intervals = getIntervals(selectedGroup, currentDay);
+        const intervals = getCombinedIntervals(currentDay);
 
         intervals.forEach(inv => {
             const left = (inv.start / 1440) * 100;
@@ -519,26 +640,7 @@
             seg.style.width = `${width}%`;
             bar.appendChild(seg);
 
-            const badge = document.createElement('div');
-            badge.className = 'badge-off';
-            badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${inv.raw}`;
-            list.appendChild(badge);
-        });
-
-        if (intervals.length === 0) {
-            list.innerHTML = `<div class="badge-none"><i class="fa-solid fa-circle-check"></i> Відключень немає (світло весь день)</div>`;
-        }
-    }
-
-    function render() {
-        renderStatus();
-        renderTimeline();
-    }
-
-    render();
-    setInterval(() => {
-        renderStatus();
-    }, 1000);
-</script>
-</body>
-</html>
+            const row = document.createElement('div');
+            row.className = 'interval-row';
+            row.innerHTML = `
+                <div class="interval-time"><i class="fa-r
